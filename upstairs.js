@@ -2,32 +2,113 @@
  * @author Josh Gibbs (uPaymeiFixit@gmail.com)
  */
 
+/* Pre-cut offsets (beginning):
+23 1/8  A2
+20 5/8  A2
+14 3/4  C2
+10 5/8  B1
+10 5/8  B1
+ 6 1/8  A2
+
+Pre-cut end pieces
+FULL    B2 (discards)
+36 7/8  D2
+10 3/8  D1
+ 6 1/4  D1
+ 3 1/2  D1
+
+ Number of whole planks left:
+ A1: 4
+ A2: 5
+ B1: 5
+ B2: 4
+ C1: 7
+ C2: 4
+ D1: 3
+ D2: 3
+ */
+
+// Size of room in inches
 const room = {
   width: 183.25,
   height: 297
 };
+const stairs_width = 46.625;
+const plank_height = 8.625;
+const plank_width = 47 + 9 / 16;
 
+// This is the length of the first plank in each row in inches
+const offsets = [
+  plank_width,
+  14.875,
+  26.5,
+  7.25,
+  40,
+  stairs_width + 21.75,
+  stairs_width + 7.5,
+  stairs_width + 34,
+  stairs_width + 13.375,
+  stairs_width + 26.5,
+  stairs_width + 8.875,
+  stairs_width + 34,
+  stairs_width + 19.75,
+  stairs_width + 28.25,
+  stairs_width + 14.125,
+  stairs_width + 47.75,
+  stairs_width + 25.25,
+  stairs_width + 41.375,
+  stairs_width + 14.375,
+  stairs_width + 16 + 15.125,
+  stairs_width + 16 + 37.25,
+  stairs_width + 16 + 30.25,
+  stairs_width + 16 + 20.375
+];
+
+// 54.375
+const planks = [
+  ["B1", "D1", "C1", "A2"],
+  ["D1", "C2", "A1", "B1", "D1"],
+  ["B1", "D2", "C2", "A1", "B1"],
+  ["A2", "C1", "B2", "D1", "C2"],
+  ["B2", "A2", "C1", "B1"],
+  ["D1", "B1", "A2", "D1"],
+  ["A2", "C2", "D1", "B2"],
+  ["B1", "A1", "C1", "D2"],
+  ["D2", "C1", "B2", "A2"],
+  ["B2", "D1", "C2", "D1"],
+  ["A2", "C2", "B1", "A1"],
+  ["B1", "A2", "C1", "B2"],
+  ["A2", "D2", "B1", "A1"],
+  ["D1", "C1", "D2", "B1"],
+  ["B2", "A2", "B2", "C2"],
+  ["D2", "C1", "A2"],
+  ["A1", "B1", "D2", "B2"],
+  ["D1", "A2", "C1"],
+  ["C1", "B2", "D1", "A2"],
+  ["A1", "C2"],
+  ["D1", "B1"],
+  ["B1", "A2"],
+  ["C2", "D2"]
+  // ["", "", "", ""],
+];
+
+const completed_rows = offsets.length;
 let ctx;
-
 // Setup function
 window.onload = () => {
   ctx = document.getElementsByTagName("canvas")[0].getContext("2d");
-
-  window.onresize = resize;
   ctx.canvas.ondblclick = ctx.canvas.webkitRequestFullScreen;
-
-  resize();
+  window.onresize();
 };
 
-function resize() {
+window.onresize = () => {
   ctx.canvas.width = window.innerWidth;
   ctx.canvas.height = window.innerHeight;
   ctx.font = "12px Arial";
   ctx.strokeStyle = "#000000";
-  ctx.fillStyle = "#FFFFFF";
   ctx.lineWidth = 2;
   draw();
-}
+};
 
 // Input: inches
 // Output: pixels (calculated so that width of the room takes up 100% of canvas width or height)
@@ -39,6 +120,8 @@ function scale(inches) {
   return pixels;
 }
 
+// Input: pixels
+// Output: inches
 function reverseScale(pixels) {
   const scale_width = ctx.canvas.width / room.width;
   const scale_height = ctx.canvas.height / room.height;
@@ -47,7 +130,7 @@ function reverseScale(pixels) {
   return inches;
 }
 
-// ctx.lineTo with inputs as inches, not pixels
+// These are a bunch of small utilities to make it easier to trace with the pen
 let pen = {
   x: 0,
   y: 0
@@ -94,12 +177,13 @@ function drawWalls() {
   ctx.lineTo(0, ctx.canvas.height);
   ctx.lineTo(0, 0);
 
-  down(43.5);
-  right(46.25);
-  down(116.5);
-  right(16);
-  down(45);
-  left(5);
+  // Begin tracing the walls
+  down(43); // accurate
+  right(stairs_width); // accurate
+  down(116.5); // accurate
+  right(16); // accurate
+  down(44.875); // accurate
+  left(4.625); // accurate
   up(26);
   left(26.25);
   up(14);
@@ -111,72 +195,32 @@ function drawWalls() {
   up(15.75);
   right(32);
   up(26);
-  right(5);
+  right(4.625); // accurate
   down(5);
-  right(53.75);
+  right(54.375);
   up(5);
-  right(5);
+  right(4.625); // accurate
   down(25);
   right(59.5);
   up(66);
-  left(60);
+  left(59.5);
   down(10.5);
-  left(5);
-  up(44.25);
-  right(66.5);
-  up(159.5);
-  left(182.5);
+  left(4.625); // accurate
+  up(44.25); // accurate
+  right(66.25); // accurate
+  up(159.75); // accurate
+  left(room.width); // accurate
 
-  ctx.stroke();
+  ctx.fillStyle = "#FFFFFF";
   ctx.fill();
+  ctx.stroke();
   ctx.closePath();
 }
 
-/* Pre-cut offsets (beginning):
-28 1/8  D1
-19 5/8  A2
-14 7/8  A1
-14 7/8  C2
-13 3/4  B2
-
-Pre-cut end pieces
-21 1/8  B2
- 7 1/2  B2
- 3 1/2  D1
-
- Number of whole planks left:
- A1: 4
- A2: 11
- B1: 9
- B2: 6
- C1: 11
- C2: 5
- D1: 6
- D2: 9
-
- Total planks needed: ~66
-*/
-
-const offsets = [
-  0,
-  14.875,
-  26.5,
-  7.25,
-  40,
-  46.25 + 21.75,
-  46.25 + 7.5,
-  46.25 + 34,
-  46.25 + 13.375,
-  46.25 + 26.5,
-  46.25 + 8.875
-];
-const completed_rows = offsets.length;
-const plank_height = 8.625;
-const plank_width = 47 + 9 / 16;
-
+// Draws horizontal and vertical lines that make up the planks
 function drawFloor() {
+  // Draw row lines
   const rows = scale(room.height) / scale(plank_height);
-  const columns = scale(room.width / scale(plank_width));
   for (let i = 0; i < rows; i++) {
     ctx.beginPath();
     ctx.moveTo(0, i * scale(plank_height));
@@ -185,14 +229,56 @@ function drawFloor() {
     ctx.closePath();
 
     if (i < offsets.length) {
-      for (let j = 0; j < columns; j++) {
-        ctx.beginPath();
-        move(offsets[i] + j * plank_width, i * plank_height);
-        down(plank_height);
-        ctx.stroke();
-        ctx.closePath();
-      }
+      drawColumnLines(i);
     }
+  }
+}
+
+function drawColumnLines(i) {
+  const columns = 1 + scale(room.width / scale(plank_width));
+  for (let j = 0; j <= columns; j++) {
+    ctx.beginPath();
+    move(offsets[i] + j * plank_width, i * plank_height);
+    down(plank_height);
+    ctx.stroke();
+    ctx.closePath();
+
+    if (planks[i] !== undefined && planks[i][j] !== undefined) {
+      drawPlankLabels(i, j);
+    }
+  }
+}
+
+function drawPlankLabels(i, j) {
+  ctx.fillStyle = "#000000";
+  // If we're on a row that is to the very left and we're on the first plank
+  if ((i < 5 || i > 18) && j === 0) {
+    // Center the text on that small plank
+    ctx.fillText(
+      planks[i][j],
+      scale(offsets[i] / 2.5),
+      scale(i * plank_height + plank_height / 1.75)
+    );
+  } else if (i > 4 && i < 19 && j === 0) {
+    // If we're on a row that isn't on the very left
+    ctx.fillText(
+      planks[i][j],
+      scale((offsets[i] - stairs_width) / 2.5 + stairs_width),
+      scale(i * plank_height + plank_height / 1.75)
+    );
+  } else if (j === planks[i].length - 1) {
+    // Left align the last label
+    ctx.fillText(
+      planks[i][j],
+      scale(offsets[i] + j * plank_width - plank_width + 1),
+      scale(i * plank_height + plank_height / 1.75)
+    );
+  } else {
+    ctx.fillText(
+      planks[i][j],
+      scale(offsets[i] + j * plank_width - plank_width / 1.75),
+      scale(i * plank_height + plank_height / 1.75)
+    );
   }
 }
 
@@ -200,23 +286,29 @@ function drawFloor() {
 function drawOffsets() {
   const rows = scale(room.height) / scale(plank_height);
   ctx.fillStyle = "#000000";
-  let bias = 0;
+  let bias_offset = 0;
+  let number_of_columns = 3;
   for (let i = 0; i < rows; i++) {
     if (i >= completed_rows) {
       ctx.fillStyle = "#FF0000";
     }
     if (i > 4 && i < 19) {
-      bias = 46.25;
+      number_of_columns = 2;
+      bias_offset = stairs_width;
     }
     if (i < offsets.length && offsets[i] !== undefined) {
       ctx.fillText(
-        `${offsets[i] - bias}, ${182.5 - offsets[i] - 3 * plank_width + bias}`,
-        scale(184),
+        `${offsets[i] - bias_offset}, ${room.width -
+          offsets[i] -
+          number_of_columns * plank_width} (rem: ${(number_of_columns + 1) *
+          plank_width -
+          room.width +
+          offsets[i]})`,
+        scale(room.width + 1),
         scale(i * plank_height + plank_height / 1.5)
       );
     }
   }
-  ctx.fillStyle = "#FFFFFF";
 }
 
 function draw() {
@@ -237,14 +329,17 @@ function draw() {
   ctx.fillText("C2 - Fuchsia", scale(plank_height + 10), scale(88));
   ctx.fillText("D1 - Orange Circle", scale(plank_height + 10), scale(94));
   ctx.fillText("D2 - Yellow", scale(plank_height + 10), scale(98));
-  ctx.fillStyle = "#FFFFFF";
 }
 
-onmousemove = function(e) {
+// If the mouse is clicked, set the offset of the row the mouse is over to the
+// mouse's X position
+window.onmousemove = e => {
   if (e.buttons === 1) {
     const x = e.pageX;
     const y = e.pageY;
+    // This calculates the row we're over
     const row = Math.floor(y / scale(plank_height));
+    // Only allow new rows to be modified
     if (row >= completed_rows) {
       offsets[row] = Math.floor(reverseScale(x) * 8) / 8;
       draw();
