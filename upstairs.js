@@ -58,10 +58,10 @@ const offsets = [
   stairs_width + 25.25,
   stairs_width + 41.375,
   stairs_width + 14.375,
-  stairs_width + 16 + 15.125,
-  stairs_width + 16 + 37.25,
-  stairs_width + 16 + 30.25,
-  stairs_width + 16 + 20.375
+  stairs_width + 16 + 15.125 - plank_width,
+  stairs_width + 16 + 37.25 - plank_width,
+  stairs_width + 16 + 30.25 - plank_width,
+  stairs_width + 16 + 20.375 - plank_width
 ];
 
 // 54.375
@@ -85,10 +85,10 @@ const planks = [
   ["A1", "B1", "D2", "B2"],
   ["D1", "A2", "C1"],
   ["C1", "B2", "D1", "A2"],
-  ["A1", "C2"],
-  ["D1", "B1"],
-  ["B1", "A2"],
-  ["C2", "D2"]
+  ["", "A1", "C2"],
+  ["", "D1", "B1"],
+  ["", "B1", "A2"],
+  ["", "C2", "D2"]
   // ["", "", "", ""],
 ];
 
@@ -178,38 +178,38 @@ function drawWalls() {
   ctx.lineTo(0, 0);
 
   // Begin tracing the walls
-  down(43); // accurate
-  right(stairs_width); // accurate
-  down(116.5); // accurate
-  right(16); // accurate
-  down(44.875); // accurate
-  left(4.625); // accurate
-  up(26);
-  left(26.25);
-  up(14);
+  down(43);
+  right(stairs_width);
+  down(116.5);
+  right(16);
+  down(44.875);
+  left(4.625);
+  up(26.375);
+  left(26.125);
+  up(14.25);
   left(31.25);
-  down(130);
-  right(35.25);
-  up(20.5);
-  left(9.5);
+  down(130.5);
+  right(35.375);
+  up(20.375);
+  left(10);
   up(15.75);
-  right(32);
+  right(31.875);
   up(26);
-  right(4.625); // accurate
-  down(5);
-  right(54.375);
-  up(5);
-  right(4.625); // accurate
-  down(25);
-  right(59.5);
-  up(66);
-  left(59.5);
-  down(10.5);
-  left(4.625); // accurate
-  up(44.25); // accurate
-  right(66.25); // accurate
-  up(159.75); // accurate
-  left(room.width); // accurate
+  right(4.625);
+  down(5.125);
+  right(54.75);
+  up(4.875);
+  right(4.625);
+  down(25.75);
+  right(59.375);
+  up(64.25);
+  left(59.375);
+  down(10.375);
+  left(4.625);
+  up(44.25);
+  right(66.25);
+  up(159.75);
+  left(room.width);
 
   ctx.fillStyle = "#FFFFFF";
   ctx.fill();
