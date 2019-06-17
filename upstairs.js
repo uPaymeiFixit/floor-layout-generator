@@ -3,29 +3,33 @@
  */
 
 /* Pre-cut offsets (beginning):
-23 1/8  A2
-20 5/8  A2
-14 3/4  C2
-10 5/8  B1
-10 5/8  B1
- 6 1/8  A2
+34 3/4 B1
+23 1/8 A2
+20 1/2 A2
+15 7/8 B1
+14 3/4 C2
+10 1/2 B1
+10 1/2 B1
+ 9 3/4 C2
 
 Pre-cut end pieces
-FULL    B2 (discards)
-36 7/8  D2
-10 3/8  D1
- 6 1/4  D1
- 3 1/2  D1
+36 7/8 D2
+16 5/8 B2
+15 1/8 C1
+10 3/8 D1
+ 6 3/8 D1
+ 3 3/8 D1
+ 3 1/8 A1
 
  Number of whole planks left:
- A1: 4
- A2: 5
- B1: 5
- B2: 4
- C1: 7
- C2: 4
- D1: 3
- D2: 3
+ A1: 1
+ A2: 4
+ B1: 2
+ B2: 3
+ C1: 4
+ C2: 2
+ D1: 1
+ D2: 2
  */
 
 // Size of room in inches
@@ -58,10 +62,13 @@ const offsets = [
   stairs_width + 25.25,
   stairs_width + 41.375,
   stairs_width + 14.375,
-  stairs_width + 16 + 15.125 - plank_width,
-  stairs_width + 16 + 37.25 - plank_width,
-  stairs_width + 16 + 30.25 - plank_width,
-  stairs_width + 16 + 20.375 - plank_width
+  stairs_width + 16 + 15.125 - plank_width, // full plank in closet, 15.125 in hallway
+  stairs_width + 16 + 37.25 - 2 * plank_width, // 32.75 in closet, 37.25 in hallway
+  stairs_width + 16 + 30.25 - plank_width, // 44.5 in closet, 30.25 in hallway
+  stairs_width + 16 + 20.375 - plank_width, // 34.375 in closet, 20.375 in hallway, 18.25 in bathroom
+  6.25,
+  24.875,
+  plank_width
 ];
 
 // 54.375
@@ -85,10 +92,13 @@ const planks = [
   ["A1", "B1", "D2", "B2"],
   ["D1", "A2", "C1"],
   ["C1", "B2", "D1", "A2"],
-  ["", "A1", "C2"],
-  ["", "D1", "B1"],
-  ["", "B1", "A2"],
-  ["", "C2", "D2"]
+  ["B2", "A1", "C2"],
+  ["", "C1", "D2 / D1", "B1"],
+  ["A1", "B1", "A2"],
+  ["D1", "C2", "D2", "A1"],
+  ["A2", "B1", "A1", "C1", "B1"],
+  ["C2", "D2", "B2", "A2", "D1"],
+  ["A1", "C1", "D1", "C2"]
   // ["", "", "", ""],
 ];
 
@@ -295,6 +305,10 @@ function drawOffsets() {
     if (i > 4 && i < 19) {
       number_of_columns = 2;
       bias_offset = stairs_width;
+    }
+    if (i > 18) {
+      number_of_columns = 3;
+      bias_offset = 0;
     }
     if (i < offsets.length && offsets[i] !== undefined) {
       ctx.fillText(
