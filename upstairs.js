@@ -2,36 +2,6 @@
  * @author Josh Gibbs (uPaymeiFixit@gmail.com)
  */
 
-/* Pre-cut offsets (beginning):
-34 3/4 B1
-23 1/8 A2
-20 1/2 A2
-15 7/8 B1
-14 3/4 C2
-10 1/2 B1
-10 1/2 B1
- 9 3/4 C2
-
-Pre-cut end pieces
-36 7/8 D2
-16 5/8 B2
-15 1/8 C1
-10 3/8 D1
- 6 3/8 D1
- 3 3/8 D1
- 3 1/8 A1
-
- Number of whole planks left:
- A1: 1
- A2: 4
- B1: 2
- B2: 3
- C1: 4
- C2: 2
- D1: 1
- D2: 2
- */
-
 // Size of room in inches
 const room = {
   width: 183.25,
@@ -68,10 +38,17 @@ const offsets = [
   stairs_width + 16 + 20.375 - plank_width, // 34.375 in closet, 20.375 in hallway, 18.25 in bathroom
   6.25,
   24.875,
+  plank_width,
+  31.25,
+  20.625,
+  40.875,
+  10.75,
+  plank_width,
+  plank_width,
+  23.25,
   plank_width
 ];
 
-// 54.375
 const planks = [
   ["B1", "D1", "C1", "A2"],
   ["D1", "C2", "A1", "B1", "D1"],
@@ -98,7 +75,15 @@ const planks = [
   ["D1", "C2", "D2", "A1"],
   ["A2", "B1", "A1", "C1", "B1"],
   ["C2", "D2", "B2", "A2", "D1"],
-  ["A1", "C1", "D1", "C2"]
+  ["A1", "C1", "D1", "C2"],
+  ["B1", "D1", "A2", "B1", "D1"],
+  ["A2", "C2 / B1", "C1", "D2", "C1"],
+  ["D1", "B2", "C2", "A1"],
+  ["B1", "C1", "", "B1", "C1"],
+  ["D2"],
+  ["C2"],
+  ["A2", "D2"],
+  ["B2"]
   // ["", "", "", ""],
 ];
 
@@ -198,6 +183,7 @@ function drawWalls() {
   left(26.125);
   up(14.25);
   left(31.25);
+  left(0.625); // This lines up the left walls
   down(130.5);
   right(35.375);
   up(20.375);
@@ -205,13 +191,13 @@ function drawWalls() {
   up(15.75);
   right(31.875);
   up(26);
-  right(4.625);
+  right(4.5);
   down(5.125);
-  right(54.75);
+  right(54.25);
   up(4.875);
-  right(4.625);
+  right(5);
   down(25.75);
-  right(59.375);
+  right(59.75);
   up(64.25);
   left(59.375);
   down(10.375);
